@@ -9,6 +9,9 @@ from musicplayer import register as register_music_module
 from opencode_editor import register as register_opencode_module
 from networth import register as register_networth_module
 from nasstorage import register as register_nasstorage_module
+from rssreader import register as register_rss_module
+from sysmon import register as register_sysmon_module
+from rommanager import register as register_rommanager_module
 from home_os_app import HomeOSWindow
 
 
@@ -29,6 +32,9 @@ if __name__ == '__main__':
     register_opencode_module()
     register_networth_module()
     register_nasstorage_module()
+    register_rss_module()
+    register_sysmon_module()
+    register_rommanager_module()
 
     app = QApplication(sys.argv)
     app.setApplicationName('HomeOS')

@@ -1,12 +1,10 @@
 # HomeOS
 
-HomeOS is a personal desktop dashboard built with PyQt6. It puts a music player, a net worth tracker, a storage analyzer, and an OpenCode editor interface all in one place, wrapped in a consistent dark UI.
+HomeOS is a personal desktop dashboard built with PyQt6. It brings a music player, net worth tracker, storage analyzer, OpenCode editor, RSS reader, system monitor, and ROM manager together in one place, wrapped in a consistent dark UI.
 
 It is designed around the idea that your personal tools should live together instead of being scattered across browser tabs and terminal windows. Everything runs locally.
 
 ![Home screen](screenshots/homescreen.png)
-
----
 
 ## Modules
 
@@ -26,7 +24,17 @@ It is designed around the idea that your personal tools should live together ins
 
 ![OpenCode Editor](screenshots/opencode.png)
 
----
+**RSS Reader** lets you subscribe to any RSS or Atom feed and read articles without leaving the app. Feeds appear in a panel on the left, articles in the center, and the selected article opens in a reader pane on the right. You can load the full article text in place, or open it in a browser with one click. Unread counts are tracked per feed and clear automatically as you read.
+
+![RSS Reader](screenshots/rssfeed.png)
+
+**System Monitor** shows a live view of your system updated every two seconds. It covers CPU usage with a per-core breakdown, RAM and swap, GPU utilization and VRAM (NVIDIA cards via NVML), live network upload and download speeds, and a top processes table sorted by CPU.
+
+![System Monitor](screenshots/systemmonitor.png)
+
+**ROM Manager** is a visual frontend for your ROM collection. You configure each system by pointing it at a folder, selecting an emulator binary, and picking a platform for art lookups. The app scans your folders and fetches box art from TheGamesDB automatically. Double-click any game to launch it directly in the configured emulator. You can right-click any card to set custom art if the automatic result is wrong.
+
+![ROM Manager](screenshots/rommanager.png)
 
 ## Requirements
 
@@ -36,6 +44,7 @@ It is designed around the idea that your personal tools should live together ins
 - `pip`
 - `adb` (Android Debug Bridge) if you want the LifeOS sync feature in the Net Worth module. On Arch: `sudo pacman -S android-tools`. On Ubuntu/Debian: `sudo apt install adb`.
 - `opencode` if you want the OpenCode Editor module. Install it with `npm install -g opencode` or follow the instructions at the [opencode repo](https://github.com/sst/opencode). After installing, confirm it works by running `opencode --version` in a terminal.
+- An NVIDIA GPU and driver with NVML support if you want GPU stats in System Monitor. AMD and Intel GPUs are not currently shown.
 
 ### Python packages
 
@@ -45,9 +54,9 @@ PyQt6-WebEngine
 psutil
 mutagen
 requests
+pynvml
+readability-lxml
 ```
-
----
 
 ## Installation
 
@@ -56,7 +65,7 @@ Clone the repository and install the dependencies:
 ```bash
 git clone <your-repo-url> home_os
 cd home_os
-pip install PyQt6 PyQt6-WebEngine psutil mutagen requests
+pip install PyQt6 PyQt6-WebEngine psutil mutagen requests pynvml readability-lxml
 ```
 
 Then run it:
@@ -66,8 +75,6 @@ python main.py
 ```
 
 That is it. No build step, no config file to create.
-
----
 
 ## Module setup
 
@@ -111,7 +118,28 @@ Open the module and set your project folder using the file tree panel. OpenCode 
 
 If `opencode` is not found on your PATH, the terminal panel will show an error when you try to start a session.
 
----
+### Weather
+
+The weather widget lives on the home screen above the module grid. Click **Set weather location** the first time, type a city name, and HomeOS will look up the coordinates and save them. After that, current conditions refresh automatically every 30 minutes. Click the gear icon at any time to change your location. Weather data comes from [Open-Meteo](https://open-meteo.com), which is free and requires no API key.
+
+### RSS Reader
+
+Click **+ Add Feed** and paste any RSS or Atom feed URL. Once added, click **Refresh All** to fetch articles. Feeds are stored locally and articles persist between sessions. The reader pane on the right shows the full content from the feed. For articles where the feed only provides a short summary, use **Load Full Article** to fetch and display the complete text in place, or **Open in Browser** to read it in your browser.
+
+### System Monitor
+
+The module works out of the box. Stats refresh every two seconds automatically.
+
+GPU monitoring requires an NVIDIA card with the NVML library available. If your GPU is not NVIDIA, the GPU card will simply not appear. No configuration is needed.
+
+### ROM Manager
+
+1. Click **⚙ API Key** and paste your TheGamesDB API key. You can get a free key at [thegamesdb.net](https://thegamesdb.net). This is used only for box art lookups and the free tier includes 3000 requests per month. Art is cached locally after the first fetch.
+2. Click **+ Add System** for each console you want to add. Fill in a name, point it at the folder containing your ROMs for that system, select the emulator binary, enter the file extensions your ROMs use (for example `.gba` or `.sfc .smc`), and pick the matching platform from the list for accurate art results.
+3. Click **↻ Scan** to find all ROMs in your configured folders. Box art will start downloading in the background.
+4. Double-click any game card to launch it directly in the configured emulator.
+
+If you rename ROM files, click **↻ Scan** again. Old entries with missing files are removed automatically and the renamed files are picked up as new entries. If TheGamesDB returns wrong art for a game, right-click the card and choose **Change Art** to pick an image from your machine instead.
 
 ## Demo data
 
@@ -123,10 +151,8 @@ python gen_demo_data.py
 
 This generates a set of obviously fake accounts and six months of history and sets the source to Manual mode. You can clear it by going into the tracker, deleting the accounts, and switching sources.
 
----
-
 ## Notes
 
-- All data is stored locally. Nothing is sent to any server except Last.fm scrobbles (if you connect an account) and Last.fm API calls for authentication.
+- All data is stored locally. Nothing is sent to any server except Last.fm scrobbles (if you connect an account), Last.fm API calls for authentication, weather lookups via Open-Meteo, and TheGamesDB art lookups (if you configure an API key).
 - The app saves its window geometry between sessions using Qt settings.
 - The module menu in the menu bar changes depending on which module is active. The File menu always belongs to HomeOS itself.
