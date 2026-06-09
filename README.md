@@ -32,7 +32,7 @@ It is designed around the idea that your personal tools should live together ins
 
 ![System Monitor](screenshots/systemmonitor.png)
 
-**eBook Library** is an in-app reader for your EPUB and PDF collection. Point it at one or more folders and it scans for books automatically, pulling cover art and metadata from each file. The library view shows covers in a grid and lets you sort by title or author, filter by folder, and search. Opening a book loads it directly in the app — no external reader needed. The EPUB reader renders chapters with a dark theme, supports paginated navigation with arrow keys or buttons, and lets you tune font size, line spacing, and column width from a toolbar at the top. PDFs open in a page-by-page view. Reading position is saved per book so you always return to where you left off.
+**eBook Library** is an in-app reader for your EPUB and PDF collection. Point it at one or more folders and it scans for books automatically, pulling cover art and metadata from each file. The library view shows covers in a grid and lets you sort by title or author, filter by folder, and search. Opening a book loads it directly in the app with no external reader needed. The EPUB reader renders chapters with a dark theme, supports paginated navigation with arrow keys or buttons, and lets you tune font size, line spacing, and column width from a toolbar at the top. PDFs open in a page-by-page view. Reading position is saved per book so you always return to where you left off.
 
 ![eBook Library](screenshots/ebooklibrary.png)
 
@@ -142,7 +142,7 @@ GPU monitoring requires an NVIDIA card with the NVML library available. If your 
 
 ### eBook Library
 
-Click **+ Add Folder** and point it at a directory containing `.epub` or `.pdf` files. The app scans recursively and extracts cover art and metadata in the background — this can take a moment on a large collection. Covers are cached locally so subsequent launches are instant.
+Click **+ Add Folder** and point it at a directory containing `.epub` or `.pdf` files. The app scans recursively and extracts cover art and metadata in the background, which can take a moment on a large collection. Covers are cached locally so subsequent launches are instant.
 
 The EPUB reader requires `ebooklib` and the PDF reader requires `PyMuPDF`. On a system-managed Python environment (such as Arch Linux), install them with:
 
