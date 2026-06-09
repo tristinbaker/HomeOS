@@ -32,6 +32,12 @@ It is designed around the idea that your personal tools should live together ins
 
 ![System Monitor](screenshots/systemmonitor.png)
 
+**eBook Library** is an in-app reader for your EPUB and PDF collection. Point it at one or more folders and it scans for books automatically, pulling cover art and metadata from each file. The library view shows covers in a grid and lets you sort by title or author, filter by folder, and search. Opening a book loads it directly in the app — no external reader needed. The EPUB reader renders chapters with a dark theme, supports paginated navigation with arrow keys or buttons, and lets you tune font size, line spacing, and column width from a toolbar at the top. PDFs open in a page-by-page view. Reading position is saved per book so you always return to where you left off.
+
+![eBook Library](screenshots/ebooklibrary.png)
+
+![eBook Library reader](screenshots/ebooklibrary2.png)
+
 **ROM Manager** is a visual frontend for your ROM collection. You configure each system by pointing it at a folder, selecting an emulator binary, and picking a platform for art lookups. The app scans your folders and fetches box art from TheGamesDB automatically. Double-click any game to launch it directly in the configured emulator. You can right-click any card to set custom art if the automatic result is wrong.
 
 ![ROM Manager](screenshots/rommanager.png)
@@ -56,6 +62,8 @@ mutagen
 requests
 pynvml
 readability-lxml
+ebooklib
+PyMuPDF
 ```
 
 ## Installation
@@ -65,7 +73,7 @@ Clone the repository and install the dependencies:
 ```bash
 git clone <your-repo-url> home_os
 cd home_os
-pip install PyQt6 PyQt6-WebEngine psutil mutagen requests pynvml readability-lxml
+pip install PyQt6 PyQt6-WebEngine psutil mutagen requests pynvml readability-lxml ebooklib PyMuPDF
 ```
 
 Then run it:
@@ -131,6 +139,16 @@ Click **+ Add Feed** and paste any RSS or Atom feed URL. Once added, click **Ref
 The module works out of the box. Stats refresh every two seconds automatically.
 
 GPU monitoring requires an NVIDIA card with the NVML library available. If your GPU is not NVIDIA, the GPU card will simply not appear. No configuration is needed.
+
+### eBook Library
+
+Click **+ Add Folder** and point it at a directory containing `.epub` or `.pdf` files. The app scans recursively and extracts cover art and metadata in the background — this can take a moment on a large collection. Covers are cached locally so subsequent launches are instant.
+
+The EPUB reader requires `ebooklib` and the PDF reader requires `PyMuPDF`. On a system-managed Python environment (such as Arch Linux), install them with:
+
+```bash
+pip install --break-system-packages ebooklib PyMuPDF
+```
 
 ### ROM Manager
 

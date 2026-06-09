@@ -618,8 +618,17 @@ class ROMManagerContent(QWidget):
         item.setIcon(QIcon(_placeholder_pixmap(game.name)))
 
     def _launch(self, item: QListWidgetItem) -> None:
+        from PyQt6.QtWidgets import QMessageBox
         game: Game = item.data(Qt.ItemDataRole.UserRole)
         sys_ = next((s for s in self._systems if s.name == game.system), None)
         if not sys_:
             return
-        subprocess.Popen([sys_.emulator_path, game.rom_path])
+        try:
+            subprocess.Popen([sys_.emulator_path, game.rom_path])
+        except OSError as e:
+            QMessageBox.critical(
+                self,
+                "Launch Failed",
+                f"Could not launch emulator:\n{sys_.emulator_path}\n\n{e}\n\n"
+                "Check that the emulator binary matches your CPU architecture (x86_64 vs ARM).",
+            )

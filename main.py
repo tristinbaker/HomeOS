@@ -12,6 +12,7 @@ from nasstorage import register as register_nasstorage_module
 from rssreader import register as register_rss_module
 from sysmon import register as register_sysmon_module
 from rommanager import register as register_rommanager_module
+from ebooks import register as register_ebooks_module
 from home_os_app import HomeOSWindow
 
 
@@ -35,7 +36,9 @@ if __name__ == '__main__':
     register_rss_module()
     register_sysmon_module()
     register_rommanager_module()
+    register_ebooks_module()
 
+    QApplication.setAttribute(Qt.ApplicationAttribute.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
     app.setApplicationName('HomeOS')
     app.setOrganizationName('HomeOS')
